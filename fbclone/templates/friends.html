@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block login %}
+	{% with user.username as username %}
+		{{ block.super }}
+	{% endwith %}
+{% endblock %}
+
+{% block content %}
+	<div class="panel right">
+		<h1>What's on your mind?</h1>
+		<p>
+			<form action="/submit" method="post">
+			{% for field in share_form %}{% csrf_token %}
+			{{ field }}
+			{% endfor %}
+			<input type="hidden" value="{{ next_url }}" name="next_url">
+			<input type="submit" value="Share">
+			</form>
+		</p>
+	</div>
+	<div class="panel left">
+		<h1>Newsfeed</h1>
+		{% for share in shares %}
+		<div class="newsfeedWrapper">
+			<a href="/users/{{ share.user.username }}">
+				<img class="avatar" src="{{ STATIC_URL }}gfx/frog.jpg">
+				<span class="name">{{ share.user.first_name }}</span>
+			</a>
+			@{{ share.user.username }}
+			<p>
+				{{ share.content }}
+			</p>
+		</div>
+		{% endfor %}
+	</div>
+{% endblock %}

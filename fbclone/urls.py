@@ -1,17 +1,8 @@
 from django.conf.urls import patterns, include, url
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
-
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'fbclone.views.home', name='home'),
-    # url(r'^fbclone/', include('fbclone.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+	url(r'^$', 'fbclone_app.views.index'), # root
+	url(r'^login', 'fbclone_app.views.login_view'), # login
+	url(r'^logout$', 'fbclone_app.views.logout_view'), # logout
+	url(r'^signup$', 'fbclone_app.views.signup'), # signup
 )

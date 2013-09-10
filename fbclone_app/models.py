@@ -9,7 +9,7 @@ class Share(models.Model):
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
-	friend = models.ManyToManyField('self', related_name='friend_of', symmetrical=True)
+	friends = models.ManyToManyField('self', related_name='friend_of', symmetrical=True)
 
 	def gravatar_url(self):
 		return "http://www.gravatar.com/avatar/%s?s=50" % hashlib.md5(self.user.email).hexdigest()

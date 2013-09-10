@@ -2,15 +2,15 @@
 
 import os
 
-PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
-LOGIN_URL = '/'
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
+
+PROJECT_PATH = os.path.abspath(os.path.dirname(__file__)) 
+LOGIN_URL = '/'
 
 MANAGERS = ADMINS
 
