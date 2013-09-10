@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block login %}
+	{% with user.username as username %}
+		{{ block.super }}
+	{% endwith %}
+{% endblock %}
+
+{% block content %}
+	<div class="panel left">
+		<h1>About {{ user.first_name }}</h1>
+		<div class="shareWrapper">
+			<a href="/users/{{ user.username }}">
+				<img class="avatar" src="{{ user.profile.gravatar_url }}">
+				<span class="name">{{ user.first_name }} {{user.last_name }}</span>
+			</a>
+			<p>
+				{{ shares.count }} Posts
+				<span class="spacing">{{ user.profile.friends.all.count }} Friends</span>
+			</p>
+			{% if friends %}
+			<form action="/friend" method="post">
+				{% csrf_token %}
+				<input type="hidden" name="friend" value="{{ user.id }}">
+				<input type="submit" value="Add friend">
+			</form>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="panel left">
+		<h1>{{ user.first_name }}'s Posts</h1>
+		{% for share in shares %}
+		<div class="shareWrapper">
+			<a href="/users/{{ user.username }}">
+				<img class="avatar" src="{{ user.profile.gravatar_url }}">
+				<span class="name">{{ share.user.first_name }} {{ share.user.last_name }}</span>
+			</a>
+			<span class="time">{{ share.creation_date|timesince }}</span>
+			<p>{{ share.content }}</p>
+		</div>
+		{% endfor %}
+	</div>
+{% endblock %}
+

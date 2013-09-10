@@ -1,11 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 import hashlib
+from django.contrib import admin
 
 class Share(models.Model):
 	content = models.CharField(max_length=1000)
 	user = models.ForeignKey(User)
 	creation_date = models.DateTimeField(auto_now=True, blank=True)
+
+class ShareAdmin(admin.ModelAdmin):
+    list_display = ('user', 'content', 'creation_date')
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
@@ -16,4 +20,9 @@ class UserProfile(models.Model):
 
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
-# Create your models here.
+class UserProfileAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Share, ShareAdmin)
+admin.site.register(UserProfile, UserProfileAdmin)
+

@@ -1,4 +1,7 @@
 from django.conf.urls import patterns, include, url
+from django.contrib import admin
+
+admin.autodiscover()
 
 urlpatterns = patterns('',
 	url(r'^$', 'fbclone_app.views.index'), # root
@@ -10,4 +13,5 @@ urlpatterns = patterns('',
 	url(r'^users/$', 'fbclone_app.views.users'), # see users
 	url(r'^users/(?P<username>\w{0,50})/$', 'fbclone_app.views.users'),
 	url(r'^friend$', 'fbclone_app.views.friend'), # add a friend
+	url(r'^admin/', include(admin.site.urls)),
 )

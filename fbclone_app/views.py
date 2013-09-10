@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
+from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
 from fbclone_app.forms import AuthenticateForm, UserCreateForm, ShareForm
 from fbclone_app.models import Share
 
@@ -85,3 +88,41 @@ def newsfeed(request, share_form=None):
 		'newsfeed.html',
 		{'share_form': share_form, 'next_url': '/newsfeed', 
 		'shares': shares, 'username': request.user.username})
+
+def get_latest(user):
+	try:
+		return user.share_set.order_by('-id')[0]
+	except IndexError:
+		return "Index Error"
+
+@login_required
+def users(request, username="", share_form=None):
+	if username:
+		# show profile
+		try:
+			user = User.objects.get(username=username)
+		except User.DoesNotExist:
+			raise Http404
+		shares = Share.objects.filter(user=user.id)
+		if username == request.user.username or request.user.profile.friends.filter(user__username=username):
+			#user's profile or his friend's profile
+			return render(request, 'user.html', {'user': user, 'shares': shares, })
+		return render(request, 'user.html', {'user': user, 'shares': shares, 'friends': True, })
+	users = User.objects.all().annotate(share_count=Count('share'))
+	shares = map(get_latest, users)
+	obj = zip(users, shares)
+	share_form = share_form or ShareForm()
+	return render(request, 'profiles.html',
+		{'obj': obj, 'next_url': '/users/', 'share_form': share_form, 'username': request.user.username, })
+
+@login_required
+def friend(request):
+	if request.method == "POST":
+		friend_id = request.POST.get('friend', False)
+		if friend_id:
+			try:
+				user = User.objects.get(id=friend_id)
+				request.user.profile.friends.add(user.profile)
+			except ObjectDoesNotExist:
+				return redirect('/users/')
+	return redirect('/users/')

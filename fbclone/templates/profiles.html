@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div class="panel right">
+		<h1>What's on your mind?</h1>
+		<p>
+			<form action="/submit" method="post">
+				{% for field in share_form %}{% csrf_token %}
+				{{ field }}
+				{% endfor %}
+				<input type="hidden" value="{{ next_url }}" name="next_url">
+				<input type="submit" value="Share">
+			</form>
+		</p>
+	</div>
+	<div class="panel_left">
+		<h1>Find a friend</h1>
+		{% for user, share in obj %}
+		<div class="shareWrapper">
+			<a href="/users/{{ user.username }}">
+				<img class="avatar" src="{{ user.profile.gravatar_url }}">
+				<span class="name">{{ user.first_name }} {{ user.last_name}}</span>
+			</a>
+			<p>
+				<span class="spacing">{{ user.profile.friends.count }} friends</span>
+			</p>
+		</div>
+		{% endfor %}
+	</div>
+{% endblock %}
