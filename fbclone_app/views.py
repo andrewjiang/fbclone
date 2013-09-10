@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from fbclone_app.forms import AuthenticateForm, UserCreateForm, ShareForm
 from fbclone_app.models import Share
 
@@ -59,3 +60,28 @@ def signup(request):
 		else:
 			return index(request, user_form=user_form)
 	return redirect('/')
+
+@login_required
+def submit(request):
+	if request.method == "POST":
+		share_form = ShareForm(data=request.POST)
+		next_url = request.POST.get("next_url", "/")
+		print "submit"
+		if share_form.is_valid():
+			print "is_valid"
+			share = share_form.save(commit=False)
+			share.user = request.user
+			share.save()
+			return redirect(next_url)
+		else:
+			return newsfeed(request, share_form)
+	return redirect('/')
+
+@login_required
+def newsfeed(request, share_form=None):
+	share_form = share_form or ShareForm()
+	shares = Share.objects.reverse()[:20]
+	return render(request,
+		'newsfeed.html',
+		{'share_form': share_form, 'next_url': '/newsfeed', 
+		'shares': shares, 'username': request.user.username})

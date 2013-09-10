@@ -46,7 +46,7 @@ class ShareForm(forms.ModelForm):
 		for f in self.errors.iterkeys():
 			if f != '__all__':
 				self.fields[f].widget.attrs.update({'class': 'error shareText'})
-			return form
+		return form
 
 	class Meta:
 		model = Share

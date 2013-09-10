@@ -19,17 +19,14 @@
 		</p>
 	</div>
 	<div class="panel left">
-		<h1>Newsfeed</h1>
+		<h1>Your wall</h1>
 		{% for share in shares %}
-		<div class="newsfeedWrapper">
+		<div class="shareWrapper">
 			<a href="/users/{{ share.user.username }}">
-				<img class="avatar" src="{{ STATIC_URL }}gfx/frog.jpg">
-				<span class="name">{{ share.user.first_name }}</span>
-			</a>
-			@{{ share.user.username }}
-			<p>
-				{{ share.content }}
-			</p>
+				<img class="avatar" src="{{ share.user.profile.gravatar_url }}">
+				<span class="name">{{ share.user.first_name }} {{ share.user.last_name }}</span>
+			<span class="time">{{ share.creation_date|timesince }}</span>
+			<p>{{ share.content }}</p>
 		</div>
 		{% endfor %}
 	</div>

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div class="panel right">
+		<h1>What's on your mind?</h1>
+		<p>
+			<form action="/submit" method="post">
+				{% for field in share_form %}{% csrf_token %}
+				{{ field }}
+				{% endfor %}
+				<input type="hidden" value="{{ next_url }}" name="next_url">
+				<input type="submit" value="Share">
+			</form>
+		</p>
+	</div>
+	<div class="panel left">
+		<h1>Your newsfeed</h1>
+		{% for share in shares %}
+		<div class="shareWrapper">
+			<img class="avatar" src="{{ share.user.profile.gravatar_url }}">
+			<span class="name">{{ share.user.first_name }} {{ share.user.last_name }}</span>
+			<span class="time">{{ share.creation_date|timesince }}</span>
+			<p>{{ share.content }}</p>
+		</div>
+		{% endfor %}
+	</div>
+{% endblock %}
