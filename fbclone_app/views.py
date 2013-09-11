@@ -82,8 +82,9 @@ def submit(request):
 
 @login_required
 def newsfeed(request, share_form=None):
-	share_form = share_form or ShareForm()
-        shares_self = Share.objects.filter(user=user.id)
+	share_form = share_form or ShareForm()       
+	user = request.user
+	shares_self = Share.objects.filter(user=user.id)
 	shares_friends = Share.objects.filter(user__userprofile__in=user.profile.friends.all)
 	shares = shares_self | shares_friends
 	return render(request,
