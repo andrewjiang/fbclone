@@ -19,10 +19,10 @@
 		<div class="shareWrapper">
 			<a href="/users/{{ user.username }}">
 				<img class="avatar" src="{{ user.profile.gravatar_url }}">
-				<span class="name">{{ user.first_name }} {{ user.last_name}}</span>
+				<span class="name" style="font-weight:bold;">{{ user.first_name }} {{ user.last_name}}</span>
 			</a>
 			<p>
-				<span class="spacing">{{ user.profile.friends.count }} friends</span>
+				<span class="spacing" style="font-size:14px;">{{ user.profile.friends.count }} friends</span>
 			</p>
 		</div>
 		{% endfor %}
