@@ -16,6 +16,7 @@ def index(request, auth_form=None, user_form=None):
 		shares_self = Share.objects.filter(user=user.id)
 		shares_friends = Share.objects.filter(user__userprofile__in=user.profile.friends.all)
 		shares = shares_self | shares_friends
+		shares = shares.order_by("creation_date").reverse()[:20]
 
 		return render(request,
 			'friends.html',
@@ -87,6 +88,7 @@ def newsfeed(request, share_form=None):
 	shares_self = Share.objects.filter(user=user.id)
 	shares_friends = Share.objects.filter(user__userprofile__in=user.profile.friends.all)
 	shares = shares_self | shares_friends
+	shares = shares.order_by("creation_date").reverse()[:20]
 	return render(request,
 		'newsfeed.html',
 		{'share_form': share_form, 'next_url': '/newsfeed', 
