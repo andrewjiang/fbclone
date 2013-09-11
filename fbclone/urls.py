@@ -15,7 +15,3 @@ urlpatterns = patterns('',
 	url(r'^friend$', 'fbclone_app.views.friend'), # add a friend
 	url(r'^admin/', include(admin.site.urls)),
 )
-
-urlpatterns += patterns('django.contrib.staticfiles.views',
-	url(r'^static/(?P<path>.*)$','serve'),
-)
