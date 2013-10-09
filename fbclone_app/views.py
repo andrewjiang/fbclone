@@ -15,7 +15,8 @@ def index(request, auth_form=None, user_form=None):
 		user = request.user
 		shares_self = Share.objects.filter(user=user.id)
 		shares_friends = Share.objects.filter(user__userprofile__in=user.profile.friends.all)
-		shares = Share.objects.order_by("creation_date").reverse()[:20]
+		shares = shares_self | shares_friends
+		shares = shares.order_by("creation_date").reverse()[:20]
 
 		return render(request,
 			'friends.html',
@@ -82,8 +83,12 @@ def submit(request):
 
 @login_required
 def newsfeed(request, share_form=None):
-	share_form = share_form or ShareForm()
-	shares = Share.objects.order_by("creation_date").reverse()[:20]
+	share_form = share_form or ShareForm()       
+	user = request.user
+	shares_self = Share.objects.filter(user=user.id)
+	shares_friends = Share.objects.filter(user__userprofile__in=user.profile.friends.all)
+	shares = shares_self | shares_friends
+	shares = shares.order_by("creation_date").reverse()[:20]
 	return render(request,
 		'newsfeed.html',
 		{'share_form': share_form, 'next_url': '/newsfeed', 
