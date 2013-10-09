@@ -1,31 +1,14 @@
-{% extends "base.html" %}
-
-{% block login %}
-	<form action="/login" method="post">{% csrf_token %}
-		{% for field in auth_form %}
-		{{ field }}
-		{% endfor %}
-		<input type="submit" id="btnLogIn" value="Log In">
-	</form>
-{% endblock %}
-
-{% block content %}
-{% if auth_form.non_field_errors or user_form.non_field_errors %}
-<div class="flash error">
-	{{ auth_form.non_field_errors }}
-	{{ user_form.non_field_errors }}
-</div>
-{% endif %}
-<img src="{{ STATIC_URL }}gfx/frog.jpg">
-<div class="panel right">
-	<h1>Sign up</h1>
-	<p>
-		<form action ="/signup" method="post">{% csrf_token %}
-			{% for field in user_form %}
-			{{ field }}
-			{% endfor %}
-			<input type="submit" value="Create Account">
-		</form>
-	</p>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet/less" href="{{ STATIC_URL }}style.less">
+    <script src="{{ STATIC_URL }}less.js"></script>
+</head>
+<body>
+  <a href="mailto:dev.tandon@kiniconsulting.com?subject=We are starting the RG meeting&body=Hey Dev, we are starting the RG meeting">
+  <div class="devbutton">
+    Email Dev
+  </div>
+  </a>
+</body>
+</html>
