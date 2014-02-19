@@ -1,6 +1,4 @@
 fbclone
 =======
 
-fbclone
-
-See requirements.txt
+Programming test for OrderAhead interview
